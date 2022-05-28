@@ -36,5 +36,5 @@ func _process(delta):
 	
 	for body in celestial_bodies:
 		var position = NBodySystem.get_body_position(int(body.get_id()));
-		print(position)
+		#print(position)
 		body.transform.origin = position;
