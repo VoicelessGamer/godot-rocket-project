@@ -34,7 +34,7 @@ cb_radius = 127.42
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 320, 0, 0 )
 far = 8192.0
 script = ExtResource( 3 )
-pivot_node_path = NodePath("../../../Moon")
+pivot_node_path = NodePath("../..")
 
 [node name="Moon" type="MeshInstance" parent="." groups=["celestial_bodies"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3844, 0, 0 )
