@@ -11,7 +11,7 @@ config_version=4
 [application]
 
 config/name="godot-rocket-project"
-run/main_scene="res://EarthMoonSystem.tscn"
+run/main_scene="res://Scenes/EarthMoonSystem.tscn"
 config/icon="res://icon.png"
 
 [autoload]

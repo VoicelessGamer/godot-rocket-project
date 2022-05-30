@@ -8,6 +8,7 @@ export (float, 0.0, 1.0) var pitch_sensitivity = 0.25;
 export (float, 0.1, 50.0) var acceleration = 20;
 export (float, 0.1, 50.0) var zoom_acceleration = 20;
 export (int, 0, 90) var pitch_limit = 90;
+export (float, 1.5, 20.0) var initialise_distance_factor = 4.0;
 export (float, 1.5, 10.0) var min_distance_factor = 2.0;
 export (float, 1.5, 20.0) var max_distance_factor = 20.0;
 export (float, 1.0, 20.0) var zoom_factor = 20.0;
@@ -31,10 +32,9 @@ var _pivot_node = null;
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	_container_node = get_node("../../CameraContainer");
-	_pivot_node = get_node(pivot_node_path);
 	_container_node.transform.origin = Vector3(0, 0, 0);
 	_pitch_limit = deg2rad(pitch_limit);
-	initialise_camera_distance();
+	update_pivot_node(get_node(pivot_node_path));
 	update_view(0);
 	pass
 
@@ -46,6 +46,10 @@ func _process(delta):
 func set_pivot_node_path(node_path):
 	pivot_node_path = node_path;
 	pass
+	
+func update_pivot_node(node):
+	_pivot_node = node;
+	add_camera_to_pivot();
 	
 func add_camera_to_pivot():
 	if _pivot_node:
@@ -62,7 +66,7 @@ func initialise_camera_distance():
 	var r = (_pivot_node as MeshInstance).get_mesh().get_radius();
 	_min_distance = r * min_distance_factor;
 	_max_distance = r * max_distance_factor;
-	_distance = _min_distance;
+	_distance = r * initialise_distance_factor;
 	set_translation(Vector3(_distance, 0, 0));
 	pass
 	
@@ -76,11 +80,9 @@ func update_distance(delta):
 	self.translation.x = lerp(self.translation.x, _distance, delta * zoom_acceleration);
 	
 func update_rotation(delta):
-	if _pivot_node:
-		var rot = _container_node.get_rotation();
-		if _target_container_rotation:			
-			_container_node.rotation.y = lerp(_container_node.rotation.y, _target_container_rotation.y, delta * acceleration);
-			_container_node.rotation.z = lerp(_container_node.rotation.z, _target_container_rotation.z, delta * acceleration);
+	if _pivot_node and _target_container_rotation:
+		_container_node.rotation.y = lerp(_container_node.rotation.y, _target_container_rotation.y, delta * acceleration);
+		_container_node.rotation.z = lerp(_container_node.rotation.z, _target_container_rotation.z, delta * acceleration);
 	pass
 
 func _unhandled_input(event):	
