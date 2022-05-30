@@ -34,6 +34,7 @@ pivot_node_path = NodePath("../../Earth")
 mesh = SubResource( 1 )
 material/0 = SubResource( 3 )
 script = ExtResource( 2 )
+cb_reference_point = true
 cb_mass = 5.972e+19
 cb_radius = 127.42
 

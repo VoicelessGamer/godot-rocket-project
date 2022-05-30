@@ -12,6 +12,7 @@ func _ready():
 
 		NBodySystem.add_celestial_body(
 			node.get_id(),
+			node.get_reference_point(),
 			node.get_mass(),
 			node.get_radius(),
 			node.get_initial_velocity(),
@@ -19,6 +20,7 @@ func _ready():
 		)
 		
 		print(node.get_id())
+		print(node.get_reference_point())
 		print(node.get_mass())
 		print(node.get_radius())
 		print(node.get_initial_velocity())
@@ -35,6 +37,4 @@ func _process(delta):
 	NBodySystem.run_simulation_step(1)
 	
 	for body in celestial_bodies:
-		var position = NBodySystem.get_body_position(int(body.get_id()));
-		#print(position)
-		body.transform.origin = position;
+		body.transform.origin = NBodySystem.get_body_position(int(body.get_id()));
